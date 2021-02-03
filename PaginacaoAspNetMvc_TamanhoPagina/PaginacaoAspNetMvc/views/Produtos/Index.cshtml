@@ -1,0 +1,68 @@
+﻿@using X.PagedList.Mvc;
+@model X.PagedList.PagedList<PaginacaoAspNetMvc.Models.Produto>
+
+@{
+    ViewBag.Title = "Produtos";
+}
+
+<h2>Produtos</h2>
+
+<div class="row" id="row-busca">
+	<div class="col-md-12">
+		@using (Html.BeginForm("Index", "Produtos", FormMethod.Get, new { @class = "form-inline", id = "formBusca" }))
+		{
+			<div class="form-group">
+				<select name="tamanhoPagina" id="tamanhoPagina" class="form-control" onchange="this.form.submit()">
+					<option value="10" @(ViewBag.TamanhoPagina == 10 ? "selected" : "")>Listar 10 registros por página</option>
+					<option value="20" @(ViewBag.TamanhoPagina == 20 ? "selected" : "")>Listar 20 registros por página</option>
+					<option value="30" @(ViewBag.TamanhoPagina == 30 ? "selected" : "")>Listar 30 registros por página</option>
+				</select>
+			</div>
+			<div class="input-group pull-right">
+				<input type="text" class="form-control" placeholder="Buscar produto..." name="busca" value="@ViewBag.Busca">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="submit">Buscar</button>
+				</span>
+			</div>
+		}
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>
+					Nome
+				</th>
+				<th>
+					Preço
+				</th>
+			</tr>
+
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Nome)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Preco)
+					</td>
+				</tr>
+			}
+
+		</table>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+		@Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina, busca = ViewBag.Busca, tamanhoPagina = ViewBag.TamanhoPagina }))
+	</div>
+	<div class="col-md-6">
+		<span class="pull-right">
+			Listando registros de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount
+		</span>
+	</div>
+</div>

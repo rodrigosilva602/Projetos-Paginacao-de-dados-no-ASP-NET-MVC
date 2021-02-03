@@ -1,0 +1,47 @@
+﻿@using X.PagedList.Mvc;
+@model X.PagedList.PagedList<PaginacaoAspNetMvc.Models.Produto>
+
+@{
+    ViewBag.Title = "Produtos";
+}
+
+<h2>Produtos</h2>
+
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>
+					Nome
+				</th>
+				<th>
+					Preço
+				</th>
+			</tr>
+
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Nome)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Preco)
+					</td>
+				</tr>
+			}
+
+		</table>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-8">
+		@Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina }))
+	</div>
+	<div class="col-md-4">
+		<span class="pull-right">
+			Listando registros de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount
+		</span>
+	</div>
+</div>
